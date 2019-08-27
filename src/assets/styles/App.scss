@@ -1,23 +1,12 @@
+@import './Vars.scss';
+@import './Media.scss';
+
 body {
     margin: 0;
-    font-family: 'Muli', sans-serif;
-    background: #8f57fd;
+    font-family: $theme-font;
+    background: $main-color;
 }
 
 * {
     box-sizing: border-box;
-}
-
-.input {
-    background-color: rgba(255,255,255,0.1);
-    border: 2px solid white;
-    border-radius: 25px;
-    color: white;
-    font-family: 'Muli', sans-serif;
-    font-size: 16px;
-    height: 50px;
-    margin-bottom: 20px;
-    outline: none;
-    padding: 0px 20px;
-    width: 70%;
 }
