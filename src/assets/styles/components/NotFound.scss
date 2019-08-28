@@ -1,0 +1,51 @@
+.center-xy {
+  // width: inherit;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  position: absolute;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.container {
+  width: 100%;
+}
+
+.copy-container {
+  text-align: center;
+}
+
+p {
+  color: #fff;
+  font-size: 24px;
+  letter-spacing: .2px;
+  margin: 0;
+}
+
+.handle {
+  background: #00ccff;
+  width: 14px;
+  height: 30px;
+  top: 0;
+  right: -20px;
+  margin-top: 1px;
+  position: absolute;
+}
+
+#cb-replay {
+  fill: #666;
+  width: 20px;
+  margin: 15px;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  overflow: inherit;
+  cursor: pointer;
+
+  &:hover {
+    fill: #888;
+  }
+}

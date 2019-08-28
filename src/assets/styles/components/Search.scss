@@ -3,8 +3,15 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 300px;
     border-radius: 0px 0px 40px 40px;
+}
+
+.main .isHome {
+    width: 70%;
+}
+
+.main .isSearch {
+    width: 70%;
 }
 
 .main__title {
@@ -12,7 +19,7 @@
     font-size: 25px;
 }
 
-.input {
+.inputSearch {
     background-color: rgba(255,255,255,0.1);
     border: 2px solid white;
     border-radius: 25px;
@@ -20,10 +27,9 @@
     font-family: 'Muli', sans-serif;
     font-size: 16px;
     height: 50px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     outline: none;
     padding: 0px 20px;
-    width: 70%;
 }
 
 ::placeholder {
