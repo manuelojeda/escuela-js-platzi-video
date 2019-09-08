@@ -13,10 +13,6 @@ const Search = (props) => {
   const { isHome, search, isSearch } = props;
   const hasSearch = Object.keys(search).length > 0;
   const handleInput = (event) => {
-    // setValues({
-    //   ...form,
-    //   [event.target.name]: event.target.value,
-    // });
     props.searchVideo(event.target.value);
   };
 
