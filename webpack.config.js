@@ -1,14 +1,25 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
+const dotenv = require('dotenv');
+const TerserPlugin = require('terser-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
+
+dotenv.config();
+
+const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
+  devtool: isProd ? 'hidden-source-map' : 'cheap-source-map',
   entry: './src/frontend/index.js',
+  mode: process.env.NODE_ENV,
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    path: isProd ?
+      path.join(process.cwd(), './src/server/public/') :
+      '/',
+    filename: isProd ? 'assets/app-[hash].js' : 'assets/app.js',
     publicPath: '/',
   },
   resolve: {
@@ -24,7 +35,7 @@ module.exports = {
           chunks: 'all',
           reuseExistingChunk: true,
           priority: 1,
-          filename: 'assets/vendor.js',
+          filename: isProd ? 'assets/vendor-[hash].js' : 'assets/vendor.js',
           enforce: true,
           test(module, chunks) {
             const name = module.nameForCondition && module.nameForCondition();
@@ -33,6 +44,8 @@ module.exports = {
         },
       },
     },
+    minimize: isProd,
+    minimizer: isProd ? [new TerserPlugin()] : [],
   },
   module: {
     rules: [
@@ -52,18 +65,21 @@ module.exports = {
         },
       },
       {
-        test: /\.html$/,
-        use: {
-          loader: 'html-loader',
-        },
-      },
-      {
         test: /\.(s*)css$/,
         use: [
           { loader: MiniCssExtractPlugin.loader },
           'css-loader',
-          'sass-loader',
           'postcss-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              data: `
+                @import "${path.resolve(__dirname, 'src/frontend/assets/styles/Vars.scss')}";
+                @import "${path.resolve(__dirname, 'src/frontend/assets/styles/Media.scss')}";
+                @import "${path.resolve(__dirname, 'src/frontend/assets/styles/Base.scss')}";
+              `,
+            },
+          },
         ],
       },
       {
@@ -89,12 +105,13 @@ module.exports = {
         ],
       },
     }),
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-      filename: './index.html',
-    }),
     new MiniCssExtractPlugin({
-      filename: 'assets/[name].css',
+      filename: isProd ? 'assets/app-[hash].css' : 'assets/app.css',
     }),
+    isProd ? new CompressionPlugin({
+      test: /\.js$|\.css$/,
+      filename: '[path].gz',
+    }) : false,
+    isProd ? new ManifestPlugin() : false,
   ],
 };

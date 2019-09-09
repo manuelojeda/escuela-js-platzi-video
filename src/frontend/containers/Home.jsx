@@ -6,7 +6,6 @@
 /* eslint-disable react/jsx-wrap-multilines */
 import React from 'react';
 import { connect } from 'react-redux';
-import '../assets/styles/App.scss';
 import Header from '../components/Header';
 import Search from '../components/Search';
 import Categories from '../components/Categories';
