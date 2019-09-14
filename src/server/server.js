@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import webpack from 'webpack';
 import helmet from 'helmet';
 import main from './routes/main';
+const passport = require("passport");
 
 dotenv.config();
 
@@ -39,7 +40,56 @@ if (ENV === 'development') {
   app.disable('x-powered-by');
 }
 
+/* Basic strategy */
+require("./utils/auth/strategies/basic");
+
+app.post("/auth/sign-in", async function(req, res, next) {
+  passport.authenticate("basic", function(error, data) {
+    try {
+      if (error || !data) {
+        next(boom.unauthorized());
+      }
+
+      req.login(data, { session: false }, async function(error) {
+        if (error) {
+          next(error);
+        }
+
+        const { token, ...user } = data;
+
+        res.cookie("token", token, {
+          httpOnly: !(ENV === 'development'),
+          secure: !(ENV === 'development'),
+        });
+
+        res.status(200).json(user);
+      });
+    } catch (err) {
+      next(err);
+    }
+  })(req, res, next);
+});
+
+app.post("/auth/sign-up", async function(req, res, next) {
+  const { body: user } = req;
+
+  try {
+    await axios({
+      url: `${config.apiUrl}/api/auth/sign-up`,
+      method: "post",
+      data: user
+    });
+
+    res.status(201).json({
+      message: "user created"
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.get('*', main);
+
 
 app.listen(PORT, (err) => {
   if (err) {

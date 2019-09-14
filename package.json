@@ -24,6 +24,7 @@
     "ignore-styles": "^5.0.1",
     "md5": "^2.2.1",
     "nodemon": "^1.19.2",
+    "passport": "^0.4.0",
     "postcss-loader": "^3.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.9.0",
