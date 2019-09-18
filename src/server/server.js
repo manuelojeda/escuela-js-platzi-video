@@ -6,7 +6,10 @@ import dotenv from 'dotenv';
 import webpack from 'webpack';
 import helmet from 'helmet';
 import main from './routes/main';
+import axios from 'axios'
 const passport = require("passport");
+const { config } = require('./config')
+const cookies = require('cookie-parser')
 
 dotenv.config();
 
@@ -14,6 +17,8 @@ const ENV = process.env.NODE_ENV;
 const PORT = process.env.PORT || 3000;
 
 const app = express();
+app.use(cookies())
+app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
 
 if (ENV === 'development') {

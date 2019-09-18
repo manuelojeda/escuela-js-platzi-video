@@ -55,6 +55,7 @@ module.exports = {
         enforce: 'pre',
         use: {
           loader: 'eslint-loader',
+          loader: 'babel-loader',
         },
       },
       {

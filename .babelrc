@@ -8,8 +8,8 @@
       "plugins": [
         "transform-class-properties",
         "react-hot-loader/babel",
-        "@babel/plugin-transform-object-assign",
-      ],
-    },
+        "@babel/plugin-transform-object-assign"
+      ]
+    }
   }
 }
