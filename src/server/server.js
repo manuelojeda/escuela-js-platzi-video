@@ -75,7 +75,7 @@ app.post("/auth/sign-in", async function(req, res, next) {
         }
 
         const { token, ...user } = data;
-
+        res.clearCookie('token')
         res.cookie("token", token, {
           httpOnly: !(ENV === 'development'),
           secure: !(ENV === 'development'),
