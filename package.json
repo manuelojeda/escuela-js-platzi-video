@@ -26,6 +26,7 @@
     "helmet": "^3.21.0",
     "history": "^4.9.0",
     "ignore-styles": "^5.0.1",
+    "js-cookie": "^2.2.1",
     "md5": "^2.2.1",
     "nodemon": "^1.19.2",
     "passport": "^0.4.0",

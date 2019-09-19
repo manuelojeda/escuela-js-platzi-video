@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { loginUser } from '../actions';
 import '../assets/styles/components/Login.scss';
 import GoogleIcon from '../assets/images/google-icon.png';
-import TwitterIcon from '../assets/images/twitter-icon.png';
+import FacebookIcon from '../assets/images/facebook-icon.png';
 import HeaderLogin from '../components/HeaderLogin';
 import Footer from '../components/Footer';
 
@@ -30,8 +30,12 @@ const Login = (props) => {
     props.loginUser(form, '/');
   };
 
+  const handleFacebookLogin = () => {
+    props.loginUserFacebook('/');
+  }
+
   return (
-    <div>
+    <d>
       <HeaderLogin />
       <section className='login'>
         <section className='login__container'>
@@ -68,16 +72,16 @@ const Login = (props) => {
             </div>
           </form>
           <section className='login__container--social-media'>
-            <div>
+            <a href="/auth/google-oauth">
                 <img src={GoogleIcon} />
                 Inicia sesión con Google
-            </div>
-            <div>
-                <img src={TwitterIcon} />
-                Inicia sesión con Twitter
-            </div>
+            </a>
+            <a href="/auth/facebook">
+                <img src={FacebookIcon} />
+                Inicia sesión con Facebook
+            </a>
           </section>
-          <p className='login__container--register'>
+          <p className='login__container--register' target="_blank">
             No tienes ninguna cuenta
             <br />
             <Link to='/register'>
@@ -87,12 +91,13 @@ const Login = (props) => {
         </section>
       </section>
       <Footer />
-    </div>
+    </d>
   );
 };
 
 const mapDispatchToProps = {
   loginUser,
+  
 };
 
 export default connect(null, mapDispatchToProps)(Login);

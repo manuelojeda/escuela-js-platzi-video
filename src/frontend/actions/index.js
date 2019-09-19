@@ -1,6 +1,7 @@
 /* eslint-disable no-multi-assign */
 /* eslint-disable import/prefer-default-export */
 import axios from 'axios'
+import Cookies from 'js-cookie'
 
 export const setFavorite = (payload) => ({
   type: 'SET_FAVORITE',
@@ -75,6 +76,41 @@ export const loginUser = ({email, password}, redirectUrl) => {
     })
     .then(() => {
       window.location.href = redirectUrl
+    })
+    .catch((err) => {
+      dispatch(setError(err))
+    })
+  }
+}
+
+export const setUserFavorite = (payload) => {
+  return (dispatch) => {
+    axios({
+      url: `/api/user-movies`,
+      method: 'post',
+      data: {
+        userId: Cookies.get('id'),
+        movieId: payload.id
+      }
+    })
+    .then(() => {
+      dispatch(setFavorite(payload))
+      window.location.href = '/'
+    })
+    .catch((err) => {
+      dispatch(setError(err))
+    })
+  }
+}
+
+export const unsetUserFavorite = (payload) => {
+  return (dispatch) => {
+    axios({
+      url: `/api/user-movies/${payload}`,
+      method: 'delete'
+    })
+    .then(() => {
+      dispatch(unsetFavorite(payload))
     })
     .catch((err) => {
       dispatch(setError(err))

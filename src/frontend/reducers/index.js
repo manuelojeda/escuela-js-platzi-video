@@ -8,7 +8,7 @@ const reducer = (state, action) => {
     case 'UNSET_FAVORITE':
       return {
         ...state,
-        mylist: state.mylist.filter((items) => items.id !== action.payload),
+        mylist: state.mylist.filter((items) => items._id !== action.payload),
       };
     case 'LOGIN_REQUEST':
       return {

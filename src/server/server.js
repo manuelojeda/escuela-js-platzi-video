@@ -7,7 +7,9 @@ import webpack from 'webpack';
 import helmet from 'helmet';
 import main from './routes/main';
 import axios from 'axios'
+import Cookies from 'js-cookie'
 const passport = require("passport");
+const boom = require('@hapi/boom')
 const { config } = require('./config')
 const cookies = require('cookie-parser')
 
@@ -47,6 +49,18 @@ if (ENV === 'development') {
 
 /* Basic strategy */
 require("./utils/auth/strategies/basic");
+
+/* OAuth strategy */
+require("./utils/auth/strategies/oauth");
+
+/* Google strategy */
+require("./utils/auth/strategies/google");
+
+/* Twitter strategy */
+// require("./utils/auth/strategies/twitter");
+
+/* Facebook strategy */
+require("./utils/auth/strategies/facebook");
 
 app.post("/auth/sign-in", async function(req, res, next) {
   passport.authenticate("basic", function(error, data) {
@@ -92,6 +106,137 @@ app.post("/auth/sign-up", async function(req, res, next) {
     next(error);
   }
 });
+
+app.get(
+  "/auth/google-oauth",
+  passport.authenticate("google-oauth", {
+    scope: ["email", "profile", "openid"]
+  })
+);
+
+app.get(
+  "/auth/google-oauth/callback",
+  passport.authenticate("google-oauth", {
+    session: false
+  }),
+  function(req, res, next) {
+    if (!req.user) {
+      next(boom.unauthorized());
+    }
+
+    const { token, ...user } = req.user;
+
+    res.cookie("token", token, {
+      httpOnly: !config.dev,
+      secure: !config.dev
+    });
+
+    res.cookie("name", user.user.name)
+    res.cookie("email", user.user.email)
+    res.cookie("id", user.user.id)
+    res.cookie("token", token)
+
+    res.redirect('back')
+  }
+);
+
+app.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["email", "profile", "openid"]
+  })
+);
+
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", { session: false }),
+  function(req, res, next) {
+    if (!req.user) {
+      next(boom.unauthorized());
+    }
+
+    const { token, ...user } = req.user;
+
+    res.cookie("token", token, {
+      httpOnly: !config.dev,
+      secure: !config.dev
+    });
+
+    res.status(200).json(user);
+  }
+);
+
+app.get("/auth/facebook", passport.authenticate("facebook"));
+
+app.get(
+  "/auth/facebook/callback",
+  passport.authenticate("facebook", { session: false }),
+  function(req, res, next) {
+    if (!req.user) {
+      next(boom.unauthorized());
+    }
+
+    const { token, ...user } = req.user;
+
+    res.cookie("token", token, {
+      httpOnly: !config.dev,
+      secure: !config.dev
+    });
+
+    res.cookie("name", user.user.name)
+    res.cookie("email", user.user.email)
+    res.cookie("id", user.user.id)
+
+    res.redirect('back')
+
+    // res.status(200).json(user);
+  }
+);
+
+app.post('/api/user-movies', async function (req, res, next) {
+  const { body: data } = req;
+
+  try {
+    const { token } = req.cookies
+    await axios({
+      url: `${config.apiUrl}/api/user-movies`,
+      method: "post",
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      data
+    });
+
+    res.status(201).json({
+      message: "user movie created"
+    });
+  } catch (error) {
+    next(error);
+  }
+})
+
+app.delete('/api/user-movies/:userMovieId', async function (req, res, next) {
+  const { body: data } = req;
+
+  try {
+    const { userMovieId } = req.params
+    const { token } = req.cookies
+    await axios({
+      url: `${config.apiUrl}/api/user-movies/${userMovieId}`,
+      method: "delete",
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      data
+    });
+
+    res.status(200).json({
+      message: "user movie delete"
+    });
+  } catch (error) {
+    next(error);
+  }
+})
 
 app.get('*', main);
 

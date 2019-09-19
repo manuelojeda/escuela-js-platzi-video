@@ -48,14 +48,14 @@
   text-decoration: underline;
 }
 
-.login__container--social-media > div {
+.login__container--social-media > a {
   align-items: center;
   display: flex;
   font-size: 14px;
   margin-bottom: 10px;
 }
 
-.login__container--social-media > div > img {
+.login__container--social-media > a > img {
   margin-right: 10px;
   width: 30px;
 }
