@@ -79,6 +79,7 @@ app.post("/auth/sign-in", async function(req, res, next) {
         res.cookie("token", token, {
           httpOnly: !(ENV === 'development'),
           secure: !(ENV === 'development'),
+          domain: 'platzivideo.com',
         });
 
         res.status(200).json(user);

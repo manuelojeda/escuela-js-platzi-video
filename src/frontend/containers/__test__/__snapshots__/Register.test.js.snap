@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header component Match Snapshot 1`] = `
+<div>
+  <header
+    className="headerLogin"
+  >
+    <a
+      href="/"
+      onClick={[Function]}
+    >
+      <img
+        alt="Platzi Video"
+        className="header__img"
+        src="test-file-stubs"
+      />
+    </a>
+  </header>
+  <section
+    className="register"
+  >
+    <section
+      className="register__container"
+    >
+      <h2>
+        Regístrate :v
+      </h2>
+      <form
+        className="register__container--form"
+        onSubmit={[Function]}
+      >
+        <input
+          className="input"
+          name="name"
+          onChange={[Function]}
+          placeholder="Nombre"
+          required={true}
+          type="text"
+        />
+        <input
+          className="input"
+          name="email"
+          onChange={[Function]}
+          placeholder="Correo"
+          required={true}
+          type="text"
+        />
+        <input
+          className="input"
+          name="password"
+          onChange={[Function]}
+          placeholder="Contraseña"
+          required={true}
+          type="password"
+        />
+        <button
+          className="button"
+          type="submit"
+        >
+          Registrarme
+        </button>
+      </form>
+      <a
+        href="/login"
+        onClick={[Function]}
+      >
+        Iniciar Sesión
+      </a>
+    </section>
+  </section>
+  <footer
+    className="footer"
+  >
+    <a
+      href="/"
+    >
+      Terminos de uso
+    </a>
+    <a
+      href="/"
+    >
+      Declaración de privacidad
+    </a>
+    <a
+      href="/"
+    >
+      Centro de ayuda
+    </a>
+  </footer>
+</div>
+`;
